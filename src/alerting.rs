@@ -7,6 +7,52 @@ use chrono::{Duration, DateTime, Utc};
 
 #[cfg(any(feature = "full", feature = "with-alerting"))]
 #[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct AvailableAlertListResponseItem {
+	/// Describes the alert type.
+	pub description: Option<String>,
+	/// Alert type name.
+	pub display_name: Option<String>,
+	/// Format of additional configuration options (filters) for the alert type. Data
+	/// type of filters during policy creation: Array of strings.
+	pub filter_options: Option<Vec<String>>,
+	/// Use this value when creating and updating a notification policy.
+	pub r#type: Option<String>,
+}
+
+#[cfg(any(feature = "full", feature = "with-alerting"))]
+pub type AvailableAlertListResponse = ::std::collections::HashMap<String, Vec<AvailableAlertListResponseItem>>;
+
+#[cfg(any(feature = "full", feature = "with-alerting"))]
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct DestinationEligibleListResponseItem {
+	/// Determines whether or not the account is eligible for the delivery mechanism.
+	pub eligible: Option<bool>,
+	/// Beta flag. Users can create a policy with a mechanism that is not ready, but we
+	/// cannot guarantee successful delivery of notifications.
+	pub ready: Option<bool>,
+	/// Determines type of delivery mechanism.
+	pub r#type: Option<DestinationEligibleListResponseItemType>,
+}
+
+#[cfg(any(feature = "full", feature = "with-alerting"))]
+pub type DestinationEligibleListResponse = ::std::collections::HashMap<String, Vec<DestinationEligibleListResponseItem>>;
+
+/// Determines type of delivery mechanism.
+#[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq, Eq)]
+pub enum DestinationEligibleListResponseItemType {
+    /// value is "email"
+	#[serde(rename = "email")]
+	Email,
+    /// value is "pagerduty"
+	#[serde(rename = "pagerduty")]
+	Pagerduty,
+    /// value is "webhook"
+	#[serde(rename = "webhook")]
+	Webhook,
+}
+
+#[cfg(any(feature = "full", feature = "with-alerting"))]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct AvailableAlertListParams {
     /// The account id
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -156,11 +202,7 @@ pub struct DestinationWebhookDeleteResponse {
 
 #[cfg(any(feature = "full", feature = "with-alerting"))]
 #[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct DestinationWebhookNewParams {
-    /// The account id
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub account_id: Option<String>,
-
+pub struct DestinationWebhookNewBody {
     /// The name of the webhook destination. This will be included in the request body
     /// when you receive a webhook notification.
     pub name: String,
@@ -177,11 +219,7 @@ pub struct DestinationWebhookNewParams {
 
 #[cfg(any(feature = "full", feature = "with-alerting"))]
 #[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct DestinationWebhookUpdateParams {
-    /// The account id
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub account_id: Option<String>,
-
+pub struct DestinationWebhookUpdateBody {
     /// The name of the webhook destination. This will be included in the request body
     /// when you receive a webhook notification.
     pub name: String,
@@ -263,23 +301,19 @@ pub struct History {
 
 #[cfg(any(feature = "full", feature = "with-alerting"))]
 #[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct HistoryListParams {
-    /// The account id
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub account_id: Option<String>,
-
+pub struct HistoryListQuery {
     /// Limit the returned results to history records older than the specified date.
     /// This must be a timestamp that conforms to RFC3339.
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub before: Option<String>,
+    pub before: Option<DateTime<Utc>>,
 
     /// Page number of paginated results.
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub page: Option<String>,
+    pub page: Option<i64>,
 
     /// Number of items per page.
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub per_page: Option<String>,
+    pub per_page: Option<i64>,
 
     /// Limit the returned results to history records newer than the specified date.
     /// This must be a timestamp that conforms to RFC3339.
@@ -747,22 +781,18 @@ pub struct PolicyDeleteResponse {
 
 #[cfg(any(feature = "full", feature = "with-alerting"))]
 #[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct PolicyNewParams {
-    /// The account id
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub account_id: Option<String>,
-
+pub struct PolicyNewBody {
     /// Refers to which event will trigger a Notification dispatch. You can use the
     /// endpoint to get available alert types which then will give you a list of
     /// possible values.
-    pub alert_type: String,
+    pub alert_type: PolicyNewParamsAlertType,
 
     /// Whether or not the Notification policy is enabled.
-    pub enabled: String,
+    pub enabled: bool,
 
     /// List of IDs that will be used when dispatching a notification. IDs for email
     /// type will be the email address.
-    pub mechanisms: String,
+    pub mechanisms: MechanismParam,
 
     /// Name of the policy.
     pub name: String,
@@ -780,16 +810,12 @@ pub struct PolicyNewParams {
     /// that alert type based on some criteria. This is only available for select alert
     /// types. See alert type documentation for more details.
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub filters: Option<String>,
+    pub filters: Option<PolicyFilterParam>,
 }
 
 #[cfg(any(feature = "full", feature = "with-alerting"))]
 #[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct PolicyUpdateParams {
-    /// The account id
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub account_id: Option<String>,
-
+pub struct PolicyUpdateBody {
     /// Optional specification of how often to re-alert from the same incident, not
     /// support on all alert types.
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -799,7 +825,7 @@ pub struct PolicyUpdateParams {
     /// endpoint to get available alert types which then will give you a list of
     /// possible values.
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub alert_type: Option<String>,
+    pub alert_type: Option<PolicyUpdateParamsAlertType>,
 
     /// Optional description for the Notification policy.
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -807,23 +833,29 @@ pub struct PolicyUpdateParams {
 
     /// Whether or not the Notification policy is enabled.
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub enabled: Option<String>,
+    pub enabled: Option<bool>,
 
     /// Optional filters that allow you to be alerted only on a subset of events for
     /// that alert type based on some criteria. This is only available for select alert
     /// types. See alert type documentation for more details.
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub filters: Option<String>,
+    pub filters: Option<PolicyFilterParam>,
 
     /// List of IDs that will be used when dispatching a notification. IDs for email
     /// type will be the email address.
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub mechanisms: Option<String>,
+    pub mechanisms: Option<MechanismParam>,
 
     /// Name of the policy.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub name: Option<String>,
 }
+
+/// Refers to which event will trigger a Notification dispatch. You can use the
+/// endpoint to get available alert types which then will give you a list of
+/// possible values.
+#[cfg(any(feature = "full", feature = "with-alerting"))]
+pub type PolicyUpdateParamsAlertType = PolicyAlertType;
 
 #[cfg(any(feature = "full", feature = "with-alerting"))]
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -869,11 +901,11 @@ pub struct SilenceUpdateResponse {
 
     /// When the silence was created.
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub created_at: Option<String>,
+    pub created_at: Option<DateTime<Utc>>,
 
     /// When the silence ends.
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub end_time: Option<String>,
+    pub end_time: Option<DateTime<Utc>>,
 
     /// The unique identifier of a notification policy
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -881,11 +913,11 @@ pub struct SilenceUpdateResponse {
 
     /// When the silence starts.
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub start_time: Option<String>,
+    pub start_time: Option<DateTime<Utc>>,
 
     /// When the silence was modified.
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub updated_at: Option<String>,
+    pub updated_at: Option<DateTime<Utc>>,
 }
 
 #[cfg(any(feature = "full", feature = "with-alerting"))]
@@ -936,11 +968,11 @@ pub struct SilenceGetResponse {
 
     /// When the silence was created.
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub created_at: Option<String>,
+    pub created_at: Option<DateTime<Utc>>,
 
     /// When the silence ends.
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub end_time: Option<String>,
+    pub end_time: Option<DateTime<Utc>>,
 
     /// The unique identifier of a notification policy
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -948,11 +980,11 @@ pub struct SilenceGetResponse {
 
     /// When the silence starts.
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub start_time: Option<String>,
+    pub start_time: Option<DateTime<Utc>>,
 
     /// When the silence was modified.
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub updated_at: Option<String>,
+    pub updated_at: Option<DateTime<Utc>>,
 }
 
 #[cfg(any(feature = "full", feature = "with-alerting"))]
@@ -1138,7 +1170,7 @@ pub struct SilenceDeleteResponseMessage {
 pub struct SilenceNewParamsBody {
     /// When the silence ends.
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub end_time: Option<String>,
+    pub end_time: Option<DateTime<Utc>>,
 
     /// The unique identifier of a notification policy
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -1146,7 +1178,7 @@ pub struct SilenceNewParamsBody {
 
     /// When the silence starts.
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub start_time: Option<String>,
+    pub start_time: Option<DateTime<Utc>>,
 }
 
 #[cfg(any(feature = "full", feature = "with-alerting"))]
@@ -1158,11 +1190,11 @@ pub struct SilenceUpdateParamsBody {
 
     /// When the silence ends.
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub end_time: Option<String>,
+    pub end_time: Option<DateTime<Utc>>,
 
     /// When the silence starts.
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub start_time: Option<String>,
+    pub start_time: Option<DateTime<Utc>>,
 }
 
 #[cfg(any(feature = "full", feature = "with-alerting"))]
@@ -1337,6 +1369,9 @@ pub enum PolicyAlertType {
     #[serde(rename = "zone_aop_custom_certificate_expiration_type")]
     ZoneAopCustomCertificateExpirationType,
 }
+
+#[cfg(any(feature = "full", feature = "with-alerting"))]
+pub type PolicyNewParamsAlertType = PolicyAlertType;
 
 #[cfg(any(feature = "full", feature = "with-alerting"))]
 #[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq, Eq)]
