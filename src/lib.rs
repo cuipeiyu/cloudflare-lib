@@ -1,4 +1,4 @@
-//! cloudflare-api for rust
+//! cloudflare api client for rust
 
 use anyhow::Result;
 use reqwest::{

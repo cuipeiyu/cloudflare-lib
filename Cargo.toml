@@ -1,14 +1,14 @@
 [package]
-name = "cloudflare-api"
+name = "cloudflare-lib"
 version = "0.0.1"
 edition = "2021"
 authors = ["PeiYu Cui <i@cuipeiyu.com>"]
 license = "MIT OR Apache-2.0"
 include = ["/Cargo.toml", "/src", "/README.md", "/LICENSE-*"]
-description = "A cloudflare api for rust"
-homepage = "https://github.com/cuipeiyu/cloudflare-api"
-repository = "https://github.com/cuipeiyu/cloudflare-api"
-documentation = "https://docs.rs/cloudflare-api"
+description = "A cloudflare lib for rust"
+homepage = "https://github.com/cuipeiyu/cloudflare-lib"
+repository = "https://github.com/cuipeiyu/cloudflare-lib"
+documentation = "https://docs.rs/cloudflare-lib"
 categories = ["api-bindings"]
 keywords = ["cloudflare", "sdk", "api", "client", "library", "bindings"]
 readme = "README.md"
