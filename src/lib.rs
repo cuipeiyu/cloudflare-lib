@@ -497,4 +497,5 @@ mod tests {
 include!("abuse_reports_api.rs");
 include!("accounts_api.rs");
 include!("alerting_api.rs");
+include!("audit_logs_api.rs");
 include!("kv_api.rs");
