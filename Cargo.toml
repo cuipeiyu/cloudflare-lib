@@ -31,12 +31,224 @@ name = "kv"
 path = "tests/kv.rs"
 required-features = ["with-kv"]
 
+[[test]]
+name = "abuse_reports"
+path = "tests/abuse_reports.rs"
+required-features = ["with-abuse-reports"]
+
+[[test]]
+name = "accounts"
+path = "tests/accounts.rs"
+required-features = ["with-accounts"]
+
 [lib]
 name = "cloudflare_lib"
 path = "src/lib.rs"
 
 [features]
 full = [
+  "with-abuse-reports",
+  "with-accounts",
+  "with-acm",
+  "with-addressing",
+  "with-ai",
+  "with-ai-gateway",
+  "with-ai-search",
+  "with-alerting",
+  "with-api-gateway",
+  "with-argo",
+  "with-audit-logs",
+  "with-billing",
+  "with-bot-management",
+  "with-botnet-feed",
+  "with-brand-protection",
+  "with-browser-rendering",
+  "with-cache",
+  "with-calls",
+  "with-certificate-authorities",
+  "with-client-certificates",
+  "with-cloud-connector",
+  "with-cloudforce-one",
+  "with-connectivity",
+  "with-content-scanning",
+  "with-custom-certificates",
+  "with-custom-hostnames",
+  "with-custom-nameservers",
+  "with-custom-pages",
+  "with-d1",
+  "with-dcv-delegation",
+  "with-diagnostics",
+  "with-dns",
+  "with-dns-firewall",
+  "with-durable-objects",
+  "with-email-routing",
+  "with-email-security",
+  "with-filters",
+  "with-firewall",
+  "with-fraud",
+  "with-healthchecks",
+  "with-hostnames",
+  "with-hyperdrive",
+  "with-iam",
+  "with-images",
+  "with-intel",
+  "with-ips",
+  "with-keyless-certificates",
   "with-kv",
+  "with-leaked-credential-checks",
+  "with-load-balancers",
+  "with-logpush",
+  "with-logs",
+  "with-magic-cloud-networking",
+  "with-magic-network-monitoring",
+  "with-magic-transit",
+  "with-managed-transforms",
+  "with-memberships",
+  "with-mtls-certificates",
+  "with-network-interconnects",
+  "with-organizations",
+  "with-origin-ca-certificates",
+  "with-origin-post-quantum-encryption",
+  "with-origin-tls-client-auth",
+  "with-page-rules",
+  "with-page-shield",
+  "with-pages",
+  "with-pipelines",
+  "with-queues",
+  "with-r2",
+  "with-r2-data-catalog",
+  "with-radar",
+  "with-rate-limits",
+  "with-realtime-kit",
+  "with-registrar",
+  "with-request-tracers",
+  "with-resource-sharing",
+  "with-rules",
+  "with-rulesets",
+  "with-rum",
+  "with-schema-validation",
+  "with-secrets-store",
+  "with-security-center",
+  "with-security-txt",
+  "with-snippets",
+  "with-spectrum",
+  "with-speed",
+  "with-ssl",
+  "with-stream",
+  "with-token-validation",
+  "with-turnstile",
+  "with-url-normalization",
+  "with-url-scanner",
+  "with-user",
+  "with-vectorize",
+  "with-waiting-rooms",
+  "with-web3",
+  "with-workers",
+  "with-workers-for-platforms",
+  "with-workflows",
+  "with-zaraz",
+  "with-zero-trust",
+  "with-zones",
 ]
+with-abuse-reports = []
+with-accounts = []
+with-acm = []
+with-addressing = []
+with-ai = []
+with-ai-gateway = []
+with-ai-search = []
+with-alerting = []
+with-api-gateway = []
+with-argo = []
+with-audit-logs = []
+with-billing = []
+with-bot-management = []
+with-botnet-feed = []
+with-brand-protection = []
+with-browser-rendering = []
+with-cache = []
+with-calls = []
+with-certificate-authorities = []
+with-client-certificates = []
+with-cloud-connector = []
+with-cloudforce-one = []
+with-connectivity = []
+with-content-scanning = []
+with-custom-certificates = []
+with-custom-hostnames = []
+with-custom-nameservers = []
+with-custom-pages = []
+with-d1 = []
+with-dcv-delegation = []
+with-diagnostics = []
+with-dns = []
+with-dns-firewall = []
+with-durable-objects = []
+with-email-routing = []
+with-email-security = []
+with-filters = []
+with-firewall = []
+with-fraud = []
+with-healthchecks = []
+with-hostnames = []
+with-hyperdrive = []
+with-iam = []
+with-images = []
+with-intel = []
+with-ips = []
+with-keyless-certificates = []
 with-kv = []
+with-leaked-credential-checks = []
+with-load-balancers = []
+with-logpush = []
+with-logs = []
+with-magic-cloud-networking = []
+with-magic-network-monitoring = []
+with-magic-transit = []
+with-managed-transforms = []
+with-memberships = []
+with-mtls-certificates = []
+with-network-interconnects = []
+with-organizations = []
+with-origin-ca-certificates = []
+with-origin-post-quantum-encryption = []
+with-origin-tls-client-auth = []
+with-page-rules = []
+with-page-shield = []
+with-pages = []
+with-pipelines = []
+with-queues = []
+with-r2 = []
+with-r2-data-catalog = []
+with-radar = []
+with-rate-limits = []
+with-realtime-kit = []
+with-registrar = []
+with-request-tracers = []
+with-resource-sharing = []
+with-rules = []
+with-rulesets = []
+with-rum = []
+with-schema-validation = []
+with-secrets-store = []
+with-security-center = []
+with-security-txt = []
+with-snippets = []
+with-spectrum = []
+with-speed = []
+with-ssl = []
+with-stream = []
+with-token-validation = []
+with-turnstile = []
+with-url-normalization = []
+with-url-scanner = []
+with-user = []
+with-vectorize = []
+with-waiting-rooms = []
+with-web3 = []
+with-workers = []
+with-workers-for-platforms = []
+with-workflows = []
+with-zaraz = []
+with-zero-trust = []
+with-zones = []

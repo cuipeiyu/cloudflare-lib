@@ -17,6 +17,8 @@ use std::time::Duration;
 #[doc(hidden)]
 pub use reqwest::Proxy;
 
+pub mod shared;
+
 /// Authentication methods
 /// ```
 /// // example 1:
@@ -424,6 +426,34 @@ impl<T> ApiSinglePage<T> {
     }
 }
 
+// impl <T> ApiPagePagination<T>
+// where
+//     T: DeserializeOwned,
+//     T: Serialize,
+// {
+//     /// call 类似 async move |page| {}
+//     pub(crate) fn new<F, Fut>(result: Vec<T>, result_info: ApiPagePaginationResultInfo, call: F) -> Self
+//     where
+//         F: Fn(i64) -> Fut + Send + 'static,
+//         Fut: std::future::Future<Output = Result<ApiPagePagination<T>>> + Send + 'static,
+//     {
+//         Self {
+//             result,
+//             result_info,
+//             call: Box::pin(call),
+//         }
+//     }
+
+//     pub fn no_more(&self) -> bool {
+//         self.result_info.per_page > self.result.len() as i64
+//     }
+
+//     pub async fn next_page(self) -> Result<ApiPagePagination<T>> {
+//         let next_page_num = self.result_info.page + 1;
+//         (self.call)(next_page_num).await
+//     }
+// }
+
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ApiPagePaginationResultInfo {
     pub page: i64,
@@ -449,6 +479,11 @@ impl Into<ApiCursorPaginationAfterResultInfo> for ApiResponseResultInfo {
     }
 }
 
+#[inline]
+fn read_env_or_default(key: &str, default: &str) -> String {
+    std::env::var(key).unwrap_or_else(|_| default.to_string())
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -459,4 +494,6 @@ mod tests {
     }
 }
 
+include!("abuse_reports_api.rs");
+include!("accounts_api.rs");
 include!("kv_api.rs");
