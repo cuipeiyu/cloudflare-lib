@@ -10,7 +10,7 @@ homepage = "https://github.com/cuipeiyu/cloudflare-lib"
 repository = "https://github.com/cuipeiyu/cloudflare-lib"
 documentation = "https://docs.rs/cloudflare-lib"
 categories = ["api-bindings"]
-keywords = ["cloudflare", "sdk", "api", "client", "library", "bindings"]
+keywords = ["cloudflare", "api", "client", "library", "bindings"]
 readme = "README.md"
 
 [dependencies]
